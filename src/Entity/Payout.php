@@ -18,6 +18,11 @@ class Payout
     private $id;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    private $amount;
+
+    /**
      * @ORM\ManyToOne(targetEntity=Seller::class, inversedBy="payouts")
      * @ORM\JoinColumn(name="seller_id", referencedColumnName="id", nullable=false)
      */
@@ -56,5 +61,26 @@ class Payout
         $this->Currency = $Currency;
 
         return $this;
+    }
+
+    public function getAmount(): int
+    {
+        return $this->amount;
+    }
+
+    public function setAmount(int $amount): self
+    {
+        $this->amount = $amount;
+
+        return $this;
+    }
+
+
+    public static function create(Seller $seller, Currency $currency, int $amount): self
+    {
+        return (new self())
+            ->setSeller($seller)
+            ->setCurrency($currency)
+            ->setAmount($amount);
     }
 }
